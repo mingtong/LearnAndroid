@@ -9,15 +9,26 @@
  
 ### UI
  - Layout
-  - dp, sp
+ - ConstraintLayout
  - Fragment
  - ListFragment
+ - ListView
  - ViewPager
+ - RecyclerView
  - DialogFragment
  - Custom control
+ - AppCompat
+ - Theme, Style
+ - Animation
+ - Material design
+ - Card
+ - Float acting button
+ - snackbar
+ 
  
 ### Media 
  - Media Player
+ - SoundPool
  - Camera
  - SurfaceView(TextureView)
  
@@ -47,7 +58,7 @@
 ### Architecture
  - MVC
  - MVP
- - MVVM
+ - MVVM (Data Binding)
 
 ### Boardcast
 
@@ -57,6 +68,8 @@
  - [Service | IntentService](https://developer.android.com/guide/components/services)
    - Service is not in a seperate thread.
    - [When use Service/IntentService?](https://stackoverflow.com/questions/15524280/service-vs-intentservice)
+   - non-sticky/sticky//////
+   - AlarmManager
 
 ### Handler
   - [Handler definition](https://developer.android.com/reference/android/os/Handler)
@@ -65,6 +78,10 @@
 ### AsyncTask
   - [AsyncTask definition](https://developer.android.com/reference/android/os/AsyncTask)
   - [Service, IntentService, AsyncTask and Thread](https://marsic.info/2016/03/01/android-service-intent-asynctask-thread/)
+
+### 3rd party
+ - EventBus
+ - RxJava
 
 ### Gradle
  - [Gralde Build](https://developer.android.com/studio/build/index.html)
