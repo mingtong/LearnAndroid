@@ -1,5 +1,58 @@
 ## Android 
 
+### Activity
+ - Lifecycle
+ - (onStop)onSaveInstanceState -> Bundle -> onCreate(Restore)
+ - Intent
+ - Mode
+ - Stack
+ 
+### UI
+ - Layout
+  - dp, sp
+ - Fragment
+ - ListFragment
+ - ViewPager
+ - DialogFragment
+ - Custom control
+ 
+### Media 
+ - Media Player
+ - Camera
+ - SurfaceView(TextureView)
+ 
+### Localizatition
+ - i18n
+ 
+### Network
+ - HTTP request
+ - TCP/UDP
+
+### Storage
+ - Serialization
+ - JSON
+ - SQLite
+ 
+### SDK version
+ - Min SDK
+ - Target SDK
+ - Compile SDK
+
+### Debug
+ - ANR
+  - Reason
+  - Analyze log
+ - Crash
+
+### Architecture
+ - MVC
+ - MVP
+ - MVVM
+
+### Boardcast
+
+### ContentProvider
+
 ### Service
  - [Service | IntentService](https://developer.android.com/guide/components/services)
    - Service is not in a seperate thread.
