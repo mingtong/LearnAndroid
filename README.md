@@ -1,7 +1,14 @@
 ## Android 
 
 ### UI
+ - View
+    - 绘制流程: Measure -> Layout -> Draw
  - Layout
+    - LinearLayout
+    - RelativeLayout
+    - FrameLayout
+    - PercentFrameLayout: 2015年 Percent Support Library 引入
+    - TabLayout，Tab分组布局
  - ConstraintLayout
  - Fragment
  - ListFragment
@@ -12,14 +19,18 @@
  - Custom control
  - AppCompat
  - Theme, Style
- - Animation
  - Material design
  - Card
- - Float acting button
- - snackbar
+ - Float acting button，浮动操作按钮
+ - Snackbar，带按钮的Toast提示
  - 事件传递机制
     - DispachTouchEvent -> Activity -> ViewGroup -> View
     - OnTouchEvent
+ - 动画
+    - FrameAnimation，帧动画，多张图片组成
+    - TweenAnimation，补间动画，关键帧动画(指定开始和结束两个点)
+    - PropertyAnimation，属性动画，改变View的属性
+    - TransitionAnimation，过渡动画，
  
 ### Activity
  - Lifecycle: onCreate, onStart, onResume, onPause, onStop, onDestroy
@@ -77,17 +88,23 @@
         - Broadcast: 10秒无响应
         - UI: 5秒无响应 “dispatchTimeout Wait queue”
      - 分析日志
-        - event log，通过检索”am_anr”关键字，可以找到发生ANR的应用
+        - LogCat，通过检索”am_anr”关键字，可以找到发生ANR的应用
         - main log，通过检索”ANR in“关键字，可以找到ANR的信息，日志的上下文会包含CPU的使用情况
         - dropbox，通过检索”anr”类型，可以找到ANR的信息
-        - traces, 发生ANR时，各进程的函数调用栈信息
+        - traces.txt, 发生ANR时，各进程的函数调用栈信息
      - 分析原因
         - 监测机制: 在启动服务、输入事件分发时，植入超时检测，用于发现ANR；
         - 报告机制: 当ANR被发现后，两个很重要的日志输出是：CPU使用情况和进程的函数调用栈，这两类日志是我们解决ANR问题的利器；
         - 监测ANR的核心原理是消息调度和超时处理
         - 只有被ANR监测的场景才会有ANR报告以及ANR提示框
+     - 避免
+        - StrictMode
+        - BlockCanary
  - Crash
-    - 原因
+    - 捕获 Java Crash: 实现全局的UncaughtExceptionHandler接口
+    - 捕获 NDK Crash: 
+       - 捕捉软中断信号
+       - Google Breakpad工具，写入minidump文件，用addr2line对应代码。
  - 内存 Leak
     - 原因
        - 内部类/匿名类无法释放（持有外部强引用）
@@ -101,11 +118,31 @@
        - 考虑HandlerThread/IntentService/AsyncTask
        - 不单纯依赖GC
        - LeakCanary
-
+### 性能优化
+ - 布局优化
+    - 不嵌套过多无用层
+    - 避免过度绘制
+    - 使用 include 重用 layout
+    - 使用 ViewStub 延迟加载
+    - merge标签减少层次
+ - 内存优化
+    - 工具: Meomor Monitor, Profile
+ - 图片优化
+ - 电量优化
+ - 网络优化
+ 
 ### Architecture
  - MVC
  - MVP
  - MVVM (Data Binding)
+    - 数据绑定
+    - 事件绑定
+ - 依赖注入
+    - ButterKnife，View注入
+    - Dagger2
+    - RoboGuice
+ -AOP
+    - AspectJ
 
 ### Boardcast
  - App可以接收到系统或者其他App的broadcast。
@@ -187,19 +224,38 @@
  - Messager
  - AIDL
  - Binder: 高性能(只拷贝一次内存)，稳定(基于C/S架构)，安全(用户空间)
+ 
 ### 3rd party
  - EventBus
+ - otto
  - RxJava
  - Volly
+ - OkHttp
+ - Retrofit
+ - Todo-MVP
+ - greenDAO
+ - Glide
+ - Fresco
+ - ImageLoader
  
 ### 热更新
  - PathClassLoader: 加载安装后的apk文件，即data/app下的文件
  - DexClassLoader: 可以加载任意目录下的dex,jar,apk,zip等。
  - 原理: 利用PathClassLoader和DexClassLoader去加载与bug类同名的类，替换掉bug类，进而达到修复bug的目的，原理是在app打包的时候阻止类打上CLASS_ISPREVERIFIED标志，然后在热修复的时候动态改变BaseDexClassLoader对象间接引用的dexElements，替换掉旧的类。
+ - tinker: Tencent开源框架 https://github.com/Tencent/tinker
+ - Dexposed: Alibaba，
+ - AndFix:  Alibaba，
+ - Nuwa: QQ空间
 
 ### 插件化
  - 它将某个功能独立提取出来，独立开发，独立测试，再插入到主应用中。依次来较少主应用的规模。
-
+ - 开源框架
+    - 
+### 安全
+ - Prograd混淆
+ - 加密
+ - 签名
+ - 证书
 ### Gradle
  - [Gralde Build](https://developer.android.com/studio/build/index.html)
 
