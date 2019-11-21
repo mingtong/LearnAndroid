@@ -13,7 +13,6 @@
     - SINGLE_TOP：同singleTop
     - CLEAR_TOP：如果目标activity在当前task栈中，则把此activity上面的所有activity销毁。
     - NO_HISTORY
- - Stack
 
 ### Intent: 在Activity, Service, Broadcast之间传递消息
    - 显式：指定组件类名
@@ -78,12 +77,22 @@
 
 ### ContentProvider
 
-### Service
- - [Service | IntentService](https://developer.android.com/guide/components/services)
-   - Service is not in a seperate thread.
-   - [When use Service/IntentService?](https://stackoverflow.com/questions/15524280/service-vs-intentservice)
-   - non-sticky/sticky//////
-   - AlarmManager
+### [Service](https://developer.android.com/guide/components/services)
+ - Service: 依附于主线程
+    - startService
+    - 通信方式
+       - bindService: 先实现ServiceConnection，然后与Activity通信
+       - Messager: 可跨进程，在Service中使用Handler接收Message，在Activity发送Message
+       - AIDL: 跨进程且多线程时，才考虑AIDL。不跨进程应该考虑用Binder，跨进程不多线程应该考虑用Messager。实现步骤：创建.aidl文件，实现接口，公开接口
+ - IntentService: 是一个单独的线程
+    - START_NOT_STICKY: 如果系统在 onStartCommand() 返回后终止服务，则除非有待传递的挂起 Intent，否则系统不会重建服务。
+    - START_STICKY: 如果系统在 onStartCommand() 返回后终止服务，则其会重建服务并调用 onStartCommand()，但不会重新传递最后一个 Intent。
+    - START_REDELIVER_INTENT: 如果系统在 onStartCommand() 返回后终止服务，则其会重建服务，并通过传递给服务的最后一个 Intent 调用 onStartCommand()。
+    - 可以 Handle 前台的工作请求，并顺序执行(onHandleIntent)。
+    - 可以通过用 LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent); 向前台发送广播消息，前台receive广播。
+ - [When use Service/IntentService?](https://stackoverflow.com/questions/15524280/service-vs-intentservice)
+ - non-sticky/sticky//////
+ - AlarmManager
 
 ### Handler
   - [Handler definition](https://developer.android.com/reference/android/os/Handler)
