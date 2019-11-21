@@ -1,5 +1,23 @@
 ## Android 
 
+### UI
+ - Layout
+ - ConstraintLayout
+ - Fragment
+ - ListFragment
+ - ListView
+ - ViewPager
+ - RecyclerView
+ - DialogFragment
+ - Custom control
+ - AppCompat
+ - Theme, Style
+ - Animation
+ - Material design
+ - Card
+ - Float acting button
+ - snackbar
+ 
 ### Activity
  - Lifecycle: onCreate, onStart, onResume, onPause, onStop, onDestroy
  - (onStop)onSaveInstanceState -> Bundle -> onCreate(Restore)
@@ -20,23 +38,7 @@
    - 数据：如果是ACTION_SEND，则需要包含URI，格式为：<scheme>://<host>:<port>/<path> 比如 content://com:200/folder/etc
    - Extra：附加数据，比如Bundle
    - PendingIntent：用于Notification
-### UI
- - Layout
- - ConstraintLayout
- - Fragment
- - ListFragment
- - ListView
- - ViewPager
- - RecyclerView
- - DialogFragment
- - Custom control
- - AppCompat
- - Theme, Style
- - Animation
- - Material design
- - Card
- - Float acting button
- - snackbar
+
  
  
 ### Media 
@@ -107,11 +109,25 @@
   - 子线程使用 Handler 应该考虑 HandlerThread（也有内置Looper）
   - 主线程创建多个Handler，对应一个Looper（一个线程只有一个），使用msg.target区分handler.
   - 什么时候用Handler.post(Runnable)? 想在UI线程执行操作的时候，比如改变UI控件的值。
-  - [Communicate With UI thread](https://developer.android.com/reference/android/os/Handler)
+  - 与UI线程通信的机制:
+     - 1
 
-### AsyncTask
-  - [AsyncTask definition](https://developer.android.com/reference/android/os/AsyncTask)
-  - [Service, IntentService, AsyncTask and Thread](https://marsic.info/2016/03/01/android-service-intent-asynctask-thread/)
+### [AsyncTask](https://developer.android.com/reference/android/os/AsyncTask)
+  - 让你可以在后台执行任务，在UI线程发布结果，而不用操作多线程或者Handler，可以被取消。
+  - 四个接口(依次执行)
+     - onPreExecute(), 在UI线程执行，在任务开始前，一般用于准备任务，比如设置进度条画面
+     - doInBackground(Params...)，必须有返回值，返回给onPostExecute(Result)，也可以执行publishProgress(Progress)把进度汇报给onProgressUpdate。
+     - onProgressUpdate(Progress...)，在UI线程执行，一般用于显示进度。
+     - onPostExecute(Result)，在UI线程执行，接收任务结果。
+  - 应该用于短时的操作。
+  - 内部是一个共享的静态的ThreadPoolExecutor 和一个 LinkedBlockingQueue。
+  - 要注意屏幕旋转时的处理。
+  - 如果activity结束了，AsyncTask并不会被取消，需要手动取消，否则会一直运行。
+  - 执行网络请求时如果有异常，需要手动处理。
+  - [什么时候用Service、IntentService,、AsyncTask、Thread](https://marsic.info/2016/03/01/android-service-intent-asynctask-thread/)
+     - Service 像是一个没有UI的Activity
+     - Thread 就是Thread，不能操作UI。
+     - AsyncTask是一个智能线程，可以操作UI。
 
 ### 3rd party
  - EventBus
