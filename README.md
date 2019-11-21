@@ -88,7 +88,12 @@
     - sendOrderedBroadcast(Intent, String): 顺序发送广播。
     - sendBroadcast(Intent): 乱序发送广播。
     - LocalBroadcastManager.sendBroadcast(): App内发送广播。
+
 ### ContentProvider
+ - 用于：跨应用分享数据。如果不跨应用，则没必要。
+ - 以一个或多个表的形式将数据呈现给其他应用。
+ - ContentResolver: 获取数据
+ - URI: content://user_dictionary/words
 
 ### [Service](https://developer.android.com/guide/components/services)
  - Service: 依附于主线程
@@ -121,7 +126,12 @@
   - 主线程创建多个Handler，对应一个Looper（一个线程只有一个），使用msg.target区分handler.
   - 什么时候用Handler.post(Runnable)? 想在UI线程执行操作的时候，比如改变UI控件的值。
   - 与UI线程通信的机制:
-     - 1
+     - Handler
+     - AsyncTask
+     - Activity.runOnUIThread(Runnable)，在Runnable中写后台任务且可以操作UI控件。
+     - View.Post(Runnable)，限定指定UI控件。
+     - View.PostDelayed(Runnabe,long)，可以设制延时
+     
 
 ### [AsyncTask](https://developer.android.com/reference/android/os/AsyncTask)
   - 让你可以在后台执行任务，在UI线程发布结果，而不用操作多线程或者Handler，可以被取消。
