@@ -125,6 +125,7 @@
     - 使用 include 重用 layout
     - 使用 ViewStub 延迟加载
     - merge标签减少层次
+    - 用Style复用xml样式
  - 内存优化
     - 工具: Meomor Monitor, Profile
  - 图片优化
@@ -256,6 +257,7 @@
  - 加密
  - 签名
  - 证书
+ - 敏感数据保存在gradle.properties中
 ### Gradle
  - [Gralde Build](https://developer.android.com/studio/build/index.html)
 
