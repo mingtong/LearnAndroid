@@ -5,7 +5,7 @@
  - ConstraintLayout
  - Fragment
  - ListFragment
- - ListView
+ - ListView 网络加载卡顿的处理
  - ViewPager
  - RecyclerView
  - DialogFragment
@@ -17,6 +17,9 @@
  - Card
  - Float acting button
  - snackbar
+ - 事件传递机制
+    - DispachTouchEvent -> Activity -> ViewGroup -> View
+    - OnTouchEvent
  
 ### Activity
  - Lifecycle: onCreate, onStart, onResume, onPause, onStop, onDestroy
@@ -56,6 +59,11 @@
  - Serialization
  - JSON
  - SQLite
+    - 升级的处理步骤
+       - 将现有表命名为临时表
+       - 创建新表
+       - 将临时表导入新表
+       - 删除临时表
  
 ### SDK version
  - Min SDK
@@ -64,9 +72,35 @@
 
 ### Debug
  - ANR
-  - Reason
-  - Analyze log
+     - 3个主要根源
+        - Service: 20秒无响应  “serviceTimeout”
+        - Broadcast: 10秒无响应
+        - UI: 5秒无响应 “dispatchTimeout Wait queue”
+     - 分析日志
+        - event log，通过检索”am_anr”关键字，可以找到发生ANR的应用
+        - main log，通过检索”ANR in“关键字，可以找到ANR的信息，日志的上下文会包含CPU的使用情况
+        - dropbox，通过检索”anr”类型，可以找到ANR的信息
+        - traces, 发生ANR时，各进程的函数调用栈信息
+     - 分析原因
+        - 监测机制: 在启动服务、输入事件分发时，植入超时检测，用于发现ANR；
+        - 报告机制: 当ANR被发现后，两个很重要的日志输出是：CPU使用情况和进程的函数调用栈，这两类日志是我们解决ANR问题的利器；
+        - 监测ANR的核心原理是消息调度和超时处理
+        - 只有被ANR监测的场景才会有ANR报告以及ANR提示框
  - Crash
+    - 原因
+ - 内存 Leak
+    - 原因
+       - 内部类/匿名类无法释放（持有外部强引用）
+       - 单例持有activity
+       - 持有static的view引用
+       - 持有static的Context引用
+       - AsyncTask（当任务完成时没有取消，或者Activity结束时没有还完成任务）
+       - 错误的重写了finalize
+    - 解决办法
+       - 使用static 内部类，弱引用
+       - 考虑HandlerThread/IntentService/AsyncTask
+       - 不单纯依赖GC
+       - LeakCanary
 
 ### Architecture
  - MVC
@@ -128,8 +162,7 @@
      - AsyncTask
      - Activity.runOnUIThread(Runnable)，在Runnable中写后台任务且可以操作UI控件。
      - View.Post(Runnable)，限定指定UI控件。
-     - View.PostDelayed(Runnabe,long)，可以设制延时
-     
+     - View.PostDelayed(Runnabe,long)，可以设制延时     
 
 ### [AsyncTask](https://developer.android.com/reference/android/os/AsyncTask)
   - 让你可以在后台执行任务，在UI线程发布结果，而不用操作多线程或者Handler，可以被取消。
@@ -147,10 +180,25 @@
      - Service 像是一个没有UI的Activity
      - Thread 就是Thread，不能操作UI。
      - AsyncTask是一个智能线程，可以操作UI。
-
+     
+### Android IPC(进程间通信)
+ - Broadcast
+ - ContentProvider
+ - Messager
+ - AIDL
+ - Binder: 高性能(只拷贝一次内存)，稳定(基于C/S架构)，安全(用户空间)
 ### 3rd party
  - EventBus
  - RxJava
+ - Volly
+ 
+### 热更新
+ - PathClassLoader: 加载安装后的apk文件，即data/app下的文件
+ - DexClassLoader: 可以加载任意目录下的dex,jar,apk,zip等。
+ - 原理: 利用PathClassLoader和DexClassLoader去加载与bug类同名的类，替换掉bug类，进而达到修复bug的目的，原理是在app打包的时候阻止类打上CLASS_ISPREVERIFIED标志，然后在热修复的时候动态改变BaseDexClassLoader对象间接引用的dexElements，替换掉旧的类。
+
+### 插件化
+ - 它将某个功能独立提取出来，独立开发，独立测试，再插入到主应用中。依次来较少主应用的规模。
 
 ### Gradle
  - [Gralde Build](https://developer.android.com/studio/build/index.html)
@@ -165,8 +213,36 @@
  - [UVC Camera](https://github.com/saki4510t/UVCCamera)
  - [Lib UVC](https://github.com/ktossell/libuvc)
  - [Lib USB](https://github.com/libusb/libusb)
+ 
+### Android Framework
+ - Android 源码编译，打包 
+ - AMS, ActivityManageService
+ - PMS, PackageManageService
+ - WMS, WindowManageService
+ - InputManagerService
+ - Audio, AudioFlinger
 
-### Java
+
+### Java重点
+ - 内部类
+ - 类加载机制: Class loader: Parents delegate
+ - 内存模型
+ - 泛型
+ - 反射及动态代理
+ - GC 算法，原理，机制
+ - JVM优化
+ - 引用
+    - 强引用，
+    - 软引用，
+    - 弱引用，
+    - 虚引用
+ - JNI
+    - Local reference, （gc不会回收) native方法return时，会被自动释放
+    - global reference，（gc不会回收)，需要手动释放，跨线程，跨方法调用 NewGlobalRef, deleteLocalRef
+    - Weak reference，（gc会回收)  DeleteGlobalWeakRef
+ - JNI 异常处理
+ - JNI 与Java通信
+
 
 #### Multithread safe
  - synchronized: 保证代码块原子操作，其他线程阻塞，同线程可重入
@@ -188,4 +264,8 @@
  - Executor: thread pool
 
 #### Dead Lock
- - 
+ - 4 conditions
+    - mutual exclusion. 互斥
+    - hold and wait or partial allocation. 请求与保持
+    - no pre-emption. 不可剥夺
+    - esource waiting or circular wait. 循环等待
