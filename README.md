@@ -3,15 +3,24 @@
 ### Activity
  - Lifecycle: onCreate, onStart, onResume, onPause, onStop, onDestroy
  - (onStop)onSaveInstanceState -> Bundle -> onCreate(Restore)
- - Intent: 在Activity, Service, Broadcast之间传递消息
-    - 显式：指定组件类名
-    - 隐式：指定操作名，如：ACTION_SEND 发送邮件，指定了此IntentFilter的Activity会被响应
-    - 数据：如果是ACTION_SEND，则需要包含URI，格式为：<scheme>://<host>:<port>/<path> 比如 content://com:200/folder/etc
-    - Extra：附加数据，比如Bundle
-    - PendingIntent：用于Notification
- - Mode
+ - launchMode(通过Manifest指定)
+    - standard: 
+    - singleTop: 如果目标activity在栈顶，则调用目标activity的onNewIntent，不启动新的activity
+    - singleTask: 如果目标activity在当前task栈中，则把此activity上面的所有activity销毁。如果不存在于当前task栈中，则把activity创建到新的task栈中，如果目标activity已经单独在另一个task的栈中，则把另一个task全部栈带到当前task的栈顶
+    - singleInstance: 如果目标activity不存在任何task栈中，则创建新的task栈，此栈中只有这个activity。如果存在，则复用。
+ - launchMode(通过Intent指定)
+    - NEW_TASK: 同singleTask
+    - SINGLE_TOP：同singleTop
+    - CLEAR_TOP：如果目标activity在当前task栈中，则把此activity上面的所有activity销毁。
+    - NO_HISTORY
  - Stack
- 
+
+### Intent: 在Activity, Service, Broadcast之间传递消息
+   - 显式：指定组件类名
+   - 隐式：指定操作名，如：ACTION_SEND 发送邮件，指定了此IntentFilter的Activity会被响应
+   - 数据：如果是ACTION_SEND，则需要包含URI，格式为：<scheme>://<host>:<port>/<path> 比如 content://com:200/folder/etc
+   - Extra：附加数据，比如Bundle
+   - PendingIntent：用于Notification
 ### UI
  - Layout
  - ConstraintLayout
