@@ -39,8 +39,6 @@
    - Extra：附加数据，比如Bundle
    - PendingIntent：用于Notification
 
- 
- 
 ### Media 
  - Media Player
  - SoundPool
@@ -90,10 +88,10 @@
     - LocalBroadcastManager.sendBroadcast(): App内发送广播。
 
 ### ContentProvider
- - 用于：跨应用分享数据。如果不跨应用，则没必要。
+ - 用于：跨应用分享数据；通过搜索框架提供定制的搜索建议。
  - 以一个或多个表的形式将数据呈现给其他应用。
  - ContentResolver: 获取数据
- - URI: content://user_dictionary/words
+ - URI: 类似格式 content://user_dictionary/words
 
 ### [Service](https://developer.android.com/guide/components/services)
  - Service: 依附于主线程
