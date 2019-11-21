@@ -1,9 +1,14 @@
 ## Android 
 
 ### Activity
- - Lifecycle
+ - Lifecycle: onCreate, onStart, onResume, onPause, onStop, onDestroy
  - (onStop)onSaveInstanceState -> Bundle -> onCreate(Restore)
- - Intent
+ - Intent: 在Activity, Service, Broadcast之间传递消息
+    - 显式：指定组件类名
+    - 隐式：指定操作名，如：ACTION_SEND 发送邮件，指定了此IntentFilter的Activity会被响应
+    - 数据：如果是ACTION_SEND，则需要包含URI，格式为：<scheme>://<host>:<port>/<path> 比如 content://com:200/folder/etc
+    - Extra：附加数据，比如Bundle
+    - PendingIntent：用于Notification
  - Mode
  - Stack
  
