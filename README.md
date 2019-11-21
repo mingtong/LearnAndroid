@@ -96,3 +96,27 @@
  - [UVC Camera](https://github.com/saki4510t/UVCCamera)
  - [Lib UVC](https://github.com/ktossell/libuvc)
  - [Lib USB](https://github.com/libusb/libusb)
+
+### Java
+
+#### Multithread safe
+ - synchronized: 保证代码块原子操作，其他线程阻塞，同线程可重入
+ - volatile: 保证变量对其他线程可见（以便让其他线程读取一最新的值），防止编译器（优化）重排列指令
+ - ThreadLocal: 线程封闭，防止共享singleton对象或全局对象
+ - final: 使对象的状态保持不变
+ - static 初始化对象
+ - ConcurrentHashmap: Java5 引入
+ - CopyOnWriteArrayList: 写入时复制
+ - Deque: Java6 引入
+ - FutureTask: 闭锁的一种实现，表示异步任务，可以用new Thread()调用
+ - Semaphore: 信号量
+ - BlockingDeque： Java6 引入
+ - Lock: 抽象类 Lock.lock(); Lock.unlock();
+ - ReentrantLock: 实现了Lock接口。公平锁(按照请求的顺序来获得锁)，可中断，可轮询(tryLock())
+ - ReadWriteLock: 读写锁。允许多个读操作同时进行，但每次只能一个写操作。
+
+#### Concurrent
+ - Executor: thread pool
+
+#### Dead Lock
+ - 
