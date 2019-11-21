@@ -81,8 +81,8 @@
  - Service: 依附于主线程
     - startService
     - 通信方式
-       - bindService: 先实现ServiceConnection，然后与Activity通信
-       - Messager: 可跨进程，在Service中使用Handler接收Message，在Activity发送Message
+       - bindService: 先实现ServiceConnection，然后与Activity通信。注意：应该在onStart()中进行绑定，并在onStop()中解除绑定。以免多次绑定。
+       - Messager: 可跨进程，在Service中使用Handler接收Message队列，在Activity发送Message
        - AIDL: 跨进程且多线程时，才考虑AIDL。不跨进程应该考虑用Binder，跨进程不多线程应该考虑用Messager。实现步骤：创建.aidl文件，实现接口，公开接口
  - IntentService: 是一个单独的线程
     - START_NOT_STICKY: 如果系统在 onStartCommand() 返回后终止服务，则除非有待传递的挂起 Intent，否则系统不会重建服务。
@@ -90,12 +90,23 @@
     - START_REDELIVER_INTENT: 如果系统在 onStartCommand() 返回后终止服务，则其会重建服务，并通过传递给服务的最后一个 Intent 调用 onStartCommand()。
     - 可以 Handle 前台的工作请求，并顺序执行(onHandleIntent)。
     - 可以通过用 LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent); 向前台发送广播消息，前台receive广播。
- - [When use Service/IntentService?](https://stackoverflow.com/questions/15524280/service-vs-intentservice)
- - non-sticky/sticky//////
- - AlarmManager
+ - [什么时候使用 Service/IntentService?](https://stackoverflow.com/questions/15524280/service-vs-intentservice)
+    - Service适合短任务，长任务应该用Thread，而IntentService可以执行长任务但是不能直接与UI通信，需要用broadcast与UI通信。
+    - Service会阻塞主线程，IntentService不能执行并行任务。
+ - AlarmManager: 可以用来定时启动service(即使程序已经不在前台)。
 
-### Handler
-  - [Handler definition](https://developer.android.com/reference/android/os/Handler)
+### [Handler](https://developer.android.com/reference/android/os/Handler)
+  - 两个作用:
+     - 定时执行某个runnable或者任务: post(Runnable r), postAtTime(Runnable r, Time), postDelay(Runnable r, Time)
+     - 在另一个线程顺序执行任务: sendMessage -> handleMessage
+  - 四部分
+     - Handler: 处理消息
+     - Looper: 消息泵
+     - MessageQueue: 消息队列
+     - Message: 消息体
+  - 子线程使用 Handler 应该考虑 HandlerThread（也有内置Looper）
+  - 主线程创建多个Handler，对应一个Looper（一个线程只有一个），使用msg.target区分handler.
+  - 什么时候用Handler.post(Runnable)? 想在UI线程执行操作的时候，比如改变UI控件的值。
   - [Communicate With UI thread](https://developer.android.com/reference/android/os/Handler)
 
 ### AsyncTask
