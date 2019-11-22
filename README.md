@@ -325,13 +325,19 @@
     - 软引用，OOM前GC回收，
     - 弱引用，GC一定回收
     - 虚引用，GC回收时收到通知
- - JNI
+ - JNI 回收
     - Local reference, （gc不会回收) native方法return时，会被自动释放
     - global reference，（gc不会回收)，需要手动释放，跨线程，跨方法调用 NewGlobalRef, deleteLocalRef
     - Weak reference，（gc会回收)  DeleteGlobalWeakRef
  - JNI 异常处理
+    - ExceptionOccurred(): 判断是否发生异常
+    - ExceptionClear(): 用来清理当前JNI层中发生的异常
+    - ThrowNew(): 向Java层抛出异常
  - JNI 与Java通信
-
+    - GetObjectClass() -> GetMethodID() -> CallVoidMethod()
+    - GetObjectClass() -> GetStaticMethodID() -> CallStaticVoidMethod()
+    - GetObjectClass() -> GetFieldID() -> GetObjectField()
+    - GetObjectClass() -> GetStaticFieldID() -> GetStaticObjectField()
 
 #### Multithread safe
  - synchronized: 保证代码块原子操作，其他线程阻塞，同线程可重入
