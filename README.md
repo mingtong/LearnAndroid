@@ -2,6 +2,7 @@
 
 ### UI
  - View
+    - Activity -> PhoneWindow -> DecorView -> TitleView -> ContentView
     - 绘制流程: Measure -> Layout -> Draw
  - Layout
     - LinearLayout
@@ -24,8 +25,9 @@
  - Float acting button，浮动操作按钮
  - Snackbar，带按钮的Toast提示
  - 事件传递机制
-    - DispachTouchEvent -> Activity -> ViewGroup -> View
-    - OnTouchEvent
+    - Activity: DispachTouchEvent -> OnTouchEvent 
+    - ViewGroup: DispachTouchEvent -> onInterceptTouchEvent -> OnTouchEvent
+    - View: DispachTouchEvent -> OnTouchEvent
  - 动画
     - FrameAnimation，帧动画，多张图片组成
     - TweenAnimation，补间动画，关键帧动画(指定开始和结束两个点)
