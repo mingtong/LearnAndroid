@@ -144,14 +144,14 @@
     - ButterKnife，View注入
     - Dagger2
     - RoboGuice
- -AOP
+ - AOP
     - AspectJ
 
 ### Boardcast
  - App可以接收到系统或者其他App的broadcast。
  - 类似 发布-订阅 模式(观察者模式)
  - 可以用于跨App的消息系统，也可以只在本App内发送。
- - 如果onReceive时间过长，会阻塞主线程，应该用[goAsync()去转成异步]https://developer.android.com/guide/components/broadcasts#effects-process-state。
+ - 如果onReceive时间过长，会阻塞主线程，应该用[goAsync()去转成异步](https://developer.android.com/guide/components/broadcasts#effects-process-state)
  - 接收广播的几种方式：
     - 在 Manifest 文件中声明要接收的IntentFilter，实现 BroadcastReceiver子类的onReceive方法。
     - 创建 BroadcastReceiver 的对象，设置IntentFilter，并registerReceiver()。生命周期与context一样，比如App或者Activity。
