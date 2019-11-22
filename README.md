@@ -229,12 +229,10 @@
  - Binder: 高性能(只拷贝一次内存)，稳定(基于C/S架构)，安全(用户空间)
  
 ### 3rd party
- - EventBus
- - otto
- - RxJava
- - Volly
- - OkHttp
- - Retrofit
+ - EventBus: 事件总线
+ - RxJava: 用于异步操作
+ - Volly: 不适合大型下载或流式操作, 封装了 ImageLoader 
+ - Retrofit: 基于OHttp, 解耦的更彻底，适合 RESTful
  - Todo-MVP
  - greenDAO
  - Glide
@@ -285,17 +283,48 @@
 
 ### Java重点
  - 内部类
- - 类加载机制: Class loader: Parents delegate
- - 内存模型
- - 泛型
+ - JVM Runtime 数据区
+    - 程序计数器(Program Counter Register): 线程私有，当前线程的字节码的行号指示器。如果是Native方法，则计算器值是undefined.
+    - JVM栈(JVM stack): 线程私有，存储局部变量，操作数栈，动态链接，方法出口等。
+    - 本地方法栈(Native Method Stack): 为调用Native方法服务(JNI))。
+    - Java堆(Java Heap): 存放所有的对象实例和数组，GC的主要管理区域。
+    - 方法区(Method Area): 各线程共享区域，存储JVM加载的类，常量，静态变量，JIT代码。
+ - StackOverflow: 线程申请的栈深度大于JVM允许的最大深度。
+ - OutOfMemoryError: JVM在扩展栈时无法申请到足够的内存空间。
+ - GC 对象是否该回收算法
+    - 引用计数
+    - 可达性分析: GC Root(JVM栈，方法区中的静态变量、常量，JNI对象) 不可达之处
+ - GC 回收算法
+    - 标记-清除(mark-swap): 容易产生碎片
+    - 复制算法(copying): 回收新生代
+    - 标记-整理(mark-compact):
+    - 分代收集: 按新生代-老年代收集
+ - GC 收集器
+    - Serial 收集器: 老的单线程收集器
+    - ParNew 收集器: Serial的多线程版本
+    - Parallel 收集器: 并行的新生代收集器，使用复制算法。
+    - Serial Old 收集器: 收集老年代。
+    - Parallel Old 收集器: 并行收集老年代。
+    - CMS 收集器: 最短时间停顿，基于标记-清除算法。
+    - G1 收集器: 面向服务端
+ - 类加载机制:  
+    - 流程: 加载 -> 验证 -> 准备 -> 解析 -> 初始化 -> 使用 -> 卸载
+ - 类加载器(Class loader)
+    - Bootstrap ClassLoader
+    - Extension ClassLoader
+    - Application ClassLoader
+ - 委派机制(Parents delegate): 加载类时，不会自己先加载，而是请求父类的加载器去完成，直到顶层，父类无法加载时，子加载器才会加载。
+    - Hack此机制: 1，自己写findClass()。2，线程上下文类加载器通过setContextClassLoader()方法设置，如果创建线程时还没有设置，就从父线程中继承。
+    - OSGI: 自定义类加载机制
+ - 内存模型 JMM
+ - 泛型 类型擦除
  - 反射及动态代理
- - GC 算法，原理，机制
  - JVM优化
- - 引用
-    - 强引用，
-    - 软引用，
-    - 弱引用，
-    - 虚引用
+ - 4种引用
+    - 强引用，GC不回收被引用的对象
+    - 软引用，OOM前GC回收，
+    - 弱引用，GC一定回收
+    - 虚引用，GC回收时收到通知
  - JNI
     - Local reference, （gc不会回收) native方法return时，会被自动释放
     - global reference，（gc不会回收)，需要手动释放，跨线程，跨方法调用 NewGlobalRef, deleteLocalRef
