@@ -200,6 +200,7 @@
   - 两个作用:
      - 定时执行某个runnable或者任务: post(Runnable r), postAtTime(Runnable r, Time), postDelay(Runnable r, Time)
      - 在另一个线程顺序执行任务: sendMessage -> handleMessage
+     - sendMessageDelay()的内部机制: 使用sendMessageAtTime转换成系统绝对时间。
   - 四部分
      - Handler: 处理消息
      - Looper: 消息泵
