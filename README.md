@@ -96,6 +96,8 @@
 
 ### Debug
  - ANR
+     - 现象
+        - UI卡住
      - 3个主要根源
         - Service: 20秒无响应  “serviceTimeout”
         - Broadcast: 10秒无响应
@@ -113,7 +115,13 @@
      - 避免
         - StrictMode
         - BlockCanary
+        - 允许后台ANR对话框
+        - CPU Profiler 查看CPU时间 https://developer.android.com/studio/profile/cpu-profiler
+        - 不要在主线程做I/O
+        - 死锁
  - Crash
+    - OutOfMemoryError
+    - 网络异常
     - 捕获 Java Crash: 实现全局的UncaughtExceptionHandler接口
     - 捕获 NDK Crash: 
        - 捕捉软中断信号
@@ -139,11 +147,57 @@
     - 使用 ViewStub 延迟加载
     - merge标签减少层次
     - 用Style复用xml样式
+    - 使用ConstraintLayout
  - 内存优化
     - 工具: Meomor Monitor, Profile
+    - onTrimMemory()得到内存消息通知:需要回收内存
+       - level: TRIM_MEMORY_UI_HIDDEN :Release any UI objects that currently hold memory
+       - level: TRIM_MEMORY_RUNNING_MODERATE: Release any memory that your app doesn't need to run
+       - level: TRIM_MEMORY_BACKGROUND: Release as much memory as the process can
+       - level: default: Release any non-critical data structures.
+    - getMemoryInfo():lowMemory that tells you whether the device is running low on memory.
+    - 节约使用service
+    - 节约使用数据结构:比如 SparseArray
+    - 节约使用抽象类(更占内存)
+    - 使用lite protobufs 序列化
+    - 避免内存抖动(大量申请又翻放，导致GC影响)
+    - 减少占内存的资源和库
+    - 用Dagger2依赖注入，Dagger2不用反射，而是静态类
+    - 小心3rd库
+    - 避免使用浮点数
+    - 谨慎使用原生方法
+    - 对常量使用静态 final
+    - 不访问变量的方法改成静态方法
+    - 避免创建不必要的对象
+    - 检查 JNI 代码中的垃圾回收问题
+    - 预防堆栈大小问题: 
+       - Dalvik默认的 Java 堆栈大小为 32KB，默认的原生堆栈大小为 1MB。
+       - ART 拥有统一的堆栈
  - 图片优化
+    - Bitmap: Systrace工具查看 uploads to GPU的时间太长（图片不要太大），调用 prepareToDraw() 预上传
+ - 渲染慢 https://developer.android.com/topic/performance/vitals/render
+    - Systrace分析每帧的render时间超过16.7ms
+    - 帧冻结: 超过 700ms 未渲染
+    - 滚动下拉列表慢(ListView, RecyclerView)
+    - RecyclerView应该调用notifyDataSetChanged()
+    - RecyclerViews嵌套，onBindViewHolder(VH, int)绑定时间太长，layout/draw 时间太久
+    - CPU Profiler 查看draw时间
  - 电量优化
+    - Wack Lock占用次数多，时间长
+    - WLAN 扫描次数过多
+    - 后台网络使用过多
  - 网络优化
+ - 唤醒时卡住: App长期在后台占用wake locks时，费电。
+    - 应当快速用完就释放
+ - 线程调度阻塞，线程太多的话会有调度延迟。
+ - IPC阻塞(binder)，把binder调用移到后台线程去做。
+ - GC阻塞：用  Memory Profiler 工具查看
+ - 权限被拒
+ - 启动时间: 使用 reportFullyDrawn() 方法测量 https://developer.android.com/topic/performance/vitals/launch-time
+    - 冷启动: 应该小于5秒
+    - 温启动: 应该小于2秒
+    - 热启动: 应该小于1.5秒
+ - 应用体积: 使用 Android App Bundle  https://developer.android.com/topic/performance/reduce-apk-size
  
 ### Architecture
  - MVC
