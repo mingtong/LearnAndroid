@@ -262,8 +262,12 @@
 
 ### 插件化
  - 它将某个功能独立提取出来，独立开发，独立测试，再插入到主应用中。依次来较少主应用的规模。
- - 开源框架
-    - 
+ - 开源框架对比： https://www.cnblogs.com/tgltt/p/9542193.html
+    - VirtualAPK：功能完备，优秀的兼容性，插件工程编译生成 apk 后，通过宿主 App 加载，每个插件 apk 被加载后，都会在宿主中创建一个单独的 LoadedPlugin 对象。
+    - RePlugin
+ - 动态代理
+    - JDK Proxy
+    - Hook AMS
 ### 安全
  - Prograd混淆
  - 加密
