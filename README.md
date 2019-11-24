@@ -66,7 +66,18 @@
  
 ### Network
  - HTTP request
- - TCP/UDP
+    - 长连接
+    - 断点续传
+ - HTTPS
+ - TLS
+ - TCP，有连接，基于流，三次握手，拥塞控制，流控制，来保证可靠的传输
+    - 粘包：https://www.cnblogs.com/panchanggui/p/9748204.html
+    - 分包：包头加包长度。
+ - UDP：无连接，基于数据包，更在意延迟率，相比丢包率
+ - RTP
+ - RTSP
+ - RTMP
+ - WebSocket
 
 ### Storage
  - Serialization
