@@ -179,7 +179,7 @@
  - URI: 类似格式 content://user_dictionary/words
 
 ### [Service](https://developer.android.com/guide/components/services)
- - Service: 依附于主线程
+ - Service: 依附于启动它的宿主（主线程或者其他）
     - startService
     - 通信方式
        - bindService: 先实现ServiceConnection，然后与Activity通信。注意：应该在onStart()中进行绑定，并在onStop()中解除绑定。以免多次绑定。
