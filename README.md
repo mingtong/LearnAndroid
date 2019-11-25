@@ -300,10 +300,11 @@
  - Volly: 不适合大型下载或流式操作, 封装了 ImageLoader 
  - Retrofit: 基于OHttp, 解耦的更彻底，适合 RESTful
  - Todo-MVP
- - greenDAO
- - Glide
- - Fresco
+ - greenDAO https://github.com/greenrobot/greenDAO
+ - dagger2 https://github.com/google/dagger
+ - Picasso https://square.github.io/picasso/
  - ImageLoader
+ - Glide https://github.com/bumptech/glide
  
 ### 热更新
  - PathClassLoader: 加载安装后的apk文件，即data/app下的文件
